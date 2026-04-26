@@ -4,6 +4,8 @@ import ConsumerPortal from './components/ConsumerPortal';
 import RecyclerPortal from './components/RecyclerPortal';
 import TokenShower from './components/TokenShower';
 import Toast from './components/Toast';
+import LandingPage from './components/LandingPage';
+import './landing.css';
 
 const INITIAL_ASSETS = [
   { id: 'ast-001', device: 'Dell XPS 15 (2021)', serial: 'DL9X1-VN382', weight: 1.86, status: 'credited',    time: '2h ago' },
@@ -23,7 +25,7 @@ function uuid() {
 
 function App() {
   const [balance, setBalance] = useState(1250);
-  const [view, setView] = useState('consumer');
+  const [view, setView] = useState('landing'); // 'landing', 'consumer', 'recycler'
   const [verifiedCount, setVerifiedCount] = useState(7);
   const [cctIssued, setCctIssued] = useState(525);
   const [assets, setAssets] = useState(INITIAL_ASSETS);
@@ -31,11 +33,9 @@ function App() {
   
   const [lastUpdated, setLastUpdated] = useState('Last updated just now');
   
-  // Animation states
   const [pulse, setPulse] = useState(false);
   const [flash, setFlash] = useState(false);
   
-  // Toast state
   const [toast, setToast] = useState({ show: false, title: '', sub: '' });
   
   const showerRef = useRef(null);
@@ -74,7 +74,6 @@ function App() {
     setVerifiedCount(c => c + 1);
     setCctIssued(c => c + 75);
     
-    // Balance animation logic
     animateBalance(balance, balance + 75);
     
     setLastUpdated('Just now');
@@ -119,12 +118,17 @@ function App() {
         sub={toast.sub} 
         onClose={() => setToast(prev => ({...prev, show: false}))} 
       />
-      <TokenShower ref={showerRef} />
+      {view !== 'landing' && <TokenShower ref={showerRef} />}
       
-      <Header balance={balance} view={view} setView={setView} />
+      {view !== 'landing' && <Header balance={balance} view={view} setView={setView} />}
       
       <main>
-        {view === 'consumer' ? (
+        {view === 'landing' ? (
+          <LandingPage onSelectRole={(role) => {
+            setView(role);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }} />
+        ) : view === 'consumer' ? (
           <ConsumerPortal 
             balance={balance}
             assets={assets}
