@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { analyzeItem } from '../utils/integrityAI';
 
 const AppContext = createContext();
 
@@ -107,16 +108,16 @@ export const AppProvider = ({ children }) => {
     ));
   };
 
-  const processRequest = (id) => {
+  const processRequest = (id, aiAnalysis) => {
     setRequests(prev => prev.map(req => {
       if (req.id === id) {
-        const ccAwarded = Number((req.weight * 10).toFixed(1));
+        const ccAwarded = aiAnalysis ? aiAnalysis.suggestedCC : Number((req.weight * 10).toFixed(1));
         const earnings = Number((req.weight * 50).toFixed(0));
         const tonsProcessed = req.weight / 1000;
         setUserProfile(u => ({ ...u, carbonCredits: u.carbonCredits + ccAwarded }));
         setCollectorProfile(c => ({ ...c, earnings: c.earnings + earnings }));
         setRecyclerProfile(r => ({ ...r, processedTons: r.processedTons + tonsProcessed }));
-        return { ...req, status: "COMPLETED", ccAwarded };
+        return { ...req, status: "COMPLETED", ccAwarded, aiAnalysis: aiAnalysis || null };
       }
       return req;
     }));

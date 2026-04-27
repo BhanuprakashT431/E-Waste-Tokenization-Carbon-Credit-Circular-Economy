@@ -1,165 +1,209 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Coins, Zap, MapPin, Recycle, Building, User } from 'lucide-react';
+
+const ROLES = [
+  {
+    id: 'user',
+    emoji: '🌿',
+    label: 'Consumer',
+    desc: 'Log your e-waste, share your location, earn Carbon Credit Tokens for every pickup.',
+    gradient: 'linear-gradient(135deg, #065F46, #059669)',
+    glow: 'rgba(16,185,129,0.3)',
+    tags: ['Log Devices', 'Earn CC Tokens', 'Track Pickups'],
+  },
+  {
+    id: 'collector',
+    emoji: '🚴',
+    label: 'Collector',
+    desc: 'Accept pickup requests, navigate via live map, verify with secure codes, earn per delivery.',
+    gradient: 'linear-gradient(135deg, #4C1D95, #7C3AED)',
+    glow: 'rgba(139,92,246,0.3)',
+    tags: ['Route Navigation', 'Pickup Codes', 'Earn per kg'],
+  },
+  {
+    id: 'recycler',
+    emoji: '🏭',
+    label: 'Recycler',
+    desc: 'Use Integrity AI to verify e-waste, identify reusable parts, and issue CC tokens.',
+    gradient: 'linear-gradient(135deg, #1E3A5F, #2563EB)',
+    glow: 'rgba(59,130,246,0.3)',
+    tags: ['AI Verification', 'Part Analysis', 'Token Issuance'],
+  },
+  {
+    id: 'esg',
+    emoji: '🌍',
+    label: 'ESG Officer',
+    desc: 'Track your organisation\'s environmental impact, CO₂ reduction, and UN SDG compliance.',
+    gradient: 'linear-gradient(135deg, #042F2E, #0D9488)',
+    glow: 'rgba(20,184,166,0.3)',
+    tags: ['ESG Reports', 'UN SDG Alignment', 'Carbon Market'],
+  },
+];
+
+const FEATURES = [
+  { icon: '🔐', title: 'Secure Pickup Flow',  desc: '4-digit codes ensure only authorised collectors can confirm pickups at the doorstep.' },
+  { icon: '🤖', title: 'Integrity AI Engine', desc: 'AI scans every item to identify reusable components and calculate accurate carbon offsets.' },
+  { icon: '🌿', title: 'Carbon Credit Tokens', desc: 'Every verified item generates CC tokens (1 kg e-waste = 1 CC) ready for ESG reporting.' },
+  { icon: '🗺️', title: 'Live Route Tracking',  desc: 'Collectors navigate from their GPS position to the user\'s pickup point in real time.' },
+  { icon: '📊', title: 'Analytics Dashboard',  desc: 'Real-time charts and milestones track your environmental impact across all roles.' },
+  { icon: '🔄', title: 'Circular Economy',      desc: 'Reusable parts are catalogued and routed to repair markets, closing the waste loop.' },
+];
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [role, setRole] = useState('consumer');
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
 
-  // Animation variants
-  const fadeIn = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
-  };
-  
-  const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 }
-    }
-  };
-
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simulate auth & route based on role
-    if (role === 'consumer') navigate('/user/dashboard');
-    if (role === 'recycler') navigate('/recycler/dashboard');
-    if (role === 'collector') navigate('/collector/dashboard');
-    if (role === 'esg') navigate('/esg/dashboard');
-  };
+  const fadeUp = { hidden: { opacity: 0, y: 30 }, show: { opacity: 1, y: 0 } };
+  const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.1 } } };
 
   return (
-    <div className="landing-page" style={{backgroundColor: '#ffffff'}}>
-      {/* HERO SECTION */}
-      <section className="hero-section" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-        {/* Background Decorative Elements */}
-        <div style={{ position: 'absolute', top: '-10%', left: '-10%', width: '40%', height: '40%', background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, rgba(255,255,255,0) 70%)', zIndex: 0 }}></div>
-        <div style={{ position: 'absolute', bottom: '-10%', right: '-10%', width: '50%', height: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, rgba(255,255,255,0) 70%)', zIndex: 0 }}></div>
+    <div style={{ background: '#0A0F0D', minHeight: '100vh', fontFamily: 'Inter, system-ui, sans-serif', color: 'white', overflowX: 'hidden' }}>
 
-        <motion.div 
-          className="hero-content"
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-          style={{ zIndex: 1, textAlign: 'center', maxWidth: 800, padding: '0 24px' }}
-        >
-          <motion.div variants={fadeIn} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'white', padding: '8px 16px', borderRadius: 30, border: '1px solid #E5E7EB', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', marginBottom: 32, fontSize: 14, fontWeight: 500, color: '#10B981' }}>
-            <span style={{ width: 8, height: 8, background: '#10B981', borderRadius: '50%', display: 'inline-block', boxShadow: '0 0 8px #10B981' }}></span> Live on Blockchain
-          </motion.div>
-          
-          <motion.h1 variants={fadeIn} style={{ fontSize: 'clamp(40px, 8vw, 72px)', fontWeight: 800, color: '#111827', lineHeight: 1.1, marginBottom: 24, letterSpacing: '-0.02em' }}>
-            Tokenize E-Waste.<br/>
-            <span style={{ background: 'linear-gradient(135deg, #10B981, #3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Offset Carbon.</span>
-          </motion.h1>
-          
-          <motion.p variants={fadeIn} style={{ fontSize: 'clamp(16px, 2vw, 20px)', color: '#4B5563', lineHeight: 1.6, maxWidth: 600, margin: '0 auto 48px auto' }}>
-            The transparent, incentivized ledger for the circular economy. Register devices, ensure sustainable recycling, and earn Carbon Credit Tokens (CCT).
-          </motion.p>
+      {/* ── NAV ── */}
+      <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, backdropFilter: 'blur(20px)', background: 'rgba(10,15,13,0.8)', borderBottom: '1px solid rgba(255,255,255,0.07)', padding: '0 40px', height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ width: 32, height: 32, background: 'linear-gradient(135deg,#10B981,#3B82F6)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>♻️</div>
+          <span style={{ fontWeight: 800, fontSize: 18, background: 'linear-gradient(90deg,#10B981,#3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>E-Waste Ledger</span>
+        </div>
+        <div style={{ display: 'flex', gap: 12 }}>
+          {ROLES.map(r => (
+            <motion.button key={r.id} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.96 }}
+              onClick={() => navigate(`/auth/${r.id}`)}
+              style={{ padding: '8px 18px', borderRadius: 20, border: '1px solid rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.8)', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
+              {r.emoji} {r.label}
+            </motion.button>
+          ))}
+        </div>
+      </nav>
 
-          <motion.div variants={fadeIn}>
-            <button onClick={() => document.getElementById('auth-section').scrollIntoView({ behavior: 'smooth' })} style={{ background: '#10B981', color: 'white', padding: '16px 32px', borderRadius: 12, fontSize: 18, fontWeight: 600, border: 'none', cursor: 'pointer', boxShadow: '0 10px 15px -3px rgba(16,185,129,0.3)', transition: 'transform 0.2s' }} onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-2px)'} onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              Get Started Now
-            </button>
-          </motion.div>
+      {/* ── HERO ── */}
+      <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '120px 24px 80px', textAlign: 'center', position: 'relative' }}>
+        {/* Background orbs */}
+        <div style={{ position: 'absolute', top: '20%', left: '10%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(16,185,129,0.12), transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '10%', right: '5%',  width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.1), transparent 70%)', pointerEvents: 'none' }} />
+
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)', padding: '8px 18px', borderRadius: 30, fontSize: 13, fontWeight: 600, color: '#10B981', marginBottom: 28 }}>
+          <motion.span animate={{ scale: [1,1.4,1] }} transition={{ repeat: Infinity, duration: 2 }}
+            style={{ width: 8, height: 8, background: '#10B981', borderRadius: '50%', display: 'inline-block' }} />
+          Verified Circular Economy — Live on Blockchain
         </motion.div>
-      </section>
 
-      {/* FEATURE CARDS SECTION */}
-      <section style={{ padding: '80px 24px', background: '#F9FAFB', borderTop: '1px solid #E5E7EB' }}>
-        <motion.div 
-          style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 32 }}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={staggerContainer}
-        >
-          {[
-            { icon: <ShieldCheck size={32} color="#10B981" />, title: "Immutable Tracking", desc: "Every device is securely tracked on-chain from registration to material extraction." },
-            { icon: <Coins size={32} color="#3B82F6" />, title: "Carbon Credit Minting", desc: "Verified recycling automatically mints CCTs directly to your decentralized wallet." },
-            { icon: <Zap size={32} color="#F59E0B" />, title: "AI Powered Verification", desc: "Advanced AI verifies hardware attributes ensuring 100% transparent recycling." }
-          ].map((feature, i) => (
-            <motion.div key={i} variants={fadeIn} style={{ background: 'white', padding: 40, borderRadius: 24, boxShadow: '0 4px 20px rgba(0,0,0,0.03)', border: '1px solid #E5E7EB' }}>
-              <div style={{ width: 64, height: 64, background: 'rgba(16,185,129,0.1)', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24 }}>
-                {feature.icon}
-              </div>
-              <h3 style={{ fontSize: 22, fontWeight: 700, color: '#111827', marginBottom: 12 }}>{feature.title}</h3>
-              <p style={{ color: '#4B5563', lineHeight: 1.6 }}>{feature.desc}</p>
-            </motion.div>
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.7 }}
+          style={{ fontSize: 'clamp(40px, 7vw, 80px)', fontWeight: 900, lineHeight: 1.08, marginBottom: 24, letterSpacing: '-0.03em' }}>
+          Tokenize E-Waste.<br />
+          <span style={{ background: 'linear-gradient(135deg, #10B981 0%, #3B82F6 50%, #8B5CF6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            Offset Carbon.
+          </span>
+        </motion.h1>
+
+        <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+          style={{ fontSize: 'clamp(16px, 2vw, 20px)', color: 'rgba(255,255,255,0.55)', maxWidth: 580, lineHeight: 1.7, marginBottom: 48 }}>
+          A multi-stakeholder circular economy platform connecting consumers, collectors, recyclers, and ESG officers — powered by AI verification and carbon credit tokenization.
+        </motion.p>
+
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center' }}>
+          <motion.button whileHover={{ scale: 1.05, boxShadow: '0 16px 40px rgba(16,185,129,0.4)' }} whileTap={{ scale: 0.97 }}
+            onClick={() => navigate('/auth/user')}
+            style={{ background: 'linear-gradient(135deg,#10B981,#059669)', color: 'white', padding: '16px 36px', borderRadius: 14, border: 'none', fontSize: 17, fontWeight: 700, cursor: 'pointer' }}>
+            🌿 Get Started Free
+          </motion.button>
+          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
+            onClick={() => document.getElementById('roles-section').scrollIntoView({ behavior: 'smooth' })}
+            style={{ background: 'rgba(255,255,255,0.08)', color: 'white', padding: '16px 36px', borderRadius: 14, border: '1px solid rgba(255,255,255,0.15)', fontSize: 17, fontWeight: 700, cursor: 'pointer' }}>
+            Explore Roles ↓
+          </motion.button>
+        </motion.div>
+
+        {/* Live stats */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+          style={{ display: 'flex', gap: 40, marginTop: 72, flexWrap: 'wrap', justifyContent: 'center' }}>
+          {[['12,450+','Devices Recycled'],['2.4M+','CC Tokens Issued'],['18.6 Tons','CO₂ Avoided'],['3,200+','Active Users']].map(([v, l]) => (
+            <div key={l} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: 28, fontWeight: 800, background: 'linear-gradient(90deg,#10B981,#3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{v}</div>
+              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginTop: 4 }}>{l}</div>
+            </div>
           ))}
         </motion.div>
       </section>
 
-      {/* AUTH / REGISTRATION SECTION */}
-      <section id="auth-section" style={{ padding: '100px 24px', display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#ffffff' }}>
-        <motion.div 
-          style={{ width: '100%', maxWidth: 600, background: 'white', borderRadius: 24, padding: 48, boxShadow: '0 20px 40px rgba(0,0,0,0.08)', border: '1px solid #E5E7EB' }}
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <div style={{ textAlign: 'center', marginBottom: 40 }}>
-            <h2 style={{ fontSize: 32, fontWeight: 800, color: '#111827', marginBottom: 8 }}>Join the Network</h2>
-            <p style={{ color: '#6B7280' }}>Create an account or login to access your dashboard.</p>
+      {/* ── ROLE CARDS ── */}
+      <section id="roles-section" style={{ padding: '80px 32px' }}>
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}>
+          <motion.h2 variants={fadeUp} style={{ textAlign: 'center', fontSize: 'clamp(28px,4vw,48px)', fontWeight: 800, marginBottom: 12 }}>
+            Choose Your Role
+          </motion.h2>
+          <motion.p variants={fadeUp} style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: 16, marginBottom: 52 }}>
+            Each stakeholder has a dedicated portal, tailored workflows, and a unique earning model.
+          </motion.p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 24, maxWidth: 1200, margin: '0 auto' }}>
+            {ROLES.map((r, i) => (
+              <motion.div
+                key={r.id}
+                variants={fadeUp}
+                whileHover={{ y: -8, boxShadow: `0 24px 60px ${r.glow}` }}
+                onClick={() => navigate(`/auth/${r.id}`)}
+                style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 24, border: '1px solid rgba(255,255,255,0.09)', padding: 28, cursor: 'pointer', transition: 'border-color 0.2s', position: 'relative', overflow: 'hidden' }}
+              >
+                {/* gradient swatch */}
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: r.gradient, borderRadius: '24px 24px 0 0' }} />
+                <div style={{ fontSize: 44, marginBottom: 14 }}>{r.emoji}</div>
+                <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>{r.label}</h3>
+                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, marginBottom: 20 }}>{r.desc}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                  {r.tags.map(t => (
+                    <span key={t} style={{ fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 20, background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.65)' }}>{t}</span>
+                  ))}
+                </div>
+                <div style={{ marginTop: 20, fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.5)' }}>
+                  Register / Login →
+                </div>
+              </motion.div>
+            ))}
           </div>
-
-          <form onSubmit={handleSubmit}>
-            {/* Role Selection */}
-            <div style={{ marginBottom: 32 }}>
-              <label style={{ display: 'block', fontSize: 14, fontWeight: 600, color: '#374151', marginBottom: 16 }}>Select Your Role</label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                {[
-                  { id: 'consumer', label: 'User', icon: <User size={20} />, color: '#10B981' },
-                  { id: 'collector', label: 'Collector', icon: <MapPin size={20} />, color: '#8B5CF6' },
-                  { id: 'recycler', label: 'Recycler', icon: <Recycle size={20} />, color: '#3B82F6' },
-                  { id: 'esg', label: 'Enterprise', icon: <Building size={20} />, color: '#1F2937' },
-                ].map((r) => (
-                  <div 
-                    key={r.id}
-                    onClick={() => setRole(r.id)}
-                    style={{ 
-                      display: 'flex', alignItems: 'center', gap: 12, padding: '16px', borderRadius: 12, cursor: 'pointer',
-                      border: role === r.id ? `2px solid ${r.color}` : '1px solid #E5E7EB',
-                      background: role === r.id ? `${r.color}0D` : 'white',
-                      transition: 'all 0.2s'
-                    }}
-                  >
-                    <div style={{ color: role === r.id ? r.color : '#9CA3AF' }}>{r.icon}</div>
-                    <span style={{ fontWeight: 600, color: role === r.id ? '#111827' : '#6B7280' }}>{r.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Form Fields */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20, marginBottom: 32 }}>
-              <div>
-                <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>Full Name</label>
-                <input required type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="John Doe" style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid #D1D5DB', fontSize: 16, outline: 'none', transition: 'border-color 0.2s' }} onFocus={(e) => e.target.style.borderColor = '#10B981'} onBlur={(e) => e.target.style.borderColor = '#D1D5DB'} />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>Email Address</label>
-                <input required type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="john@example.com" style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid #D1D5DB', fontSize: 16, outline: 'none', transition: 'border-color 0.2s' }} onFocus={(e) => e.target.style.borderColor = '#10B981'} onBlur={(e) => e.target.style.borderColor = '#D1D5DB'} />
-              </div>
-              <div>
-                <label style={{ display: 'block', fontSize: 14, fontWeight: 500, color: '#374151', marginBottom: 8 }}>Phone Number</label>
-                <input required type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="+1 (555) 000-0000" style={{ width: '100%', padding: '14px 16px', borderRadius: 12, border: '1px solid #D1D5DB', fontSize: 16, outline: 'none', transition: 'border-color 0.2s' }} onFocus={(e) => e.target.style.borderColor = '#10B981'} onBlur={(e) => e.target.style.borderColor = '#D1D5DB'} />
-              </div>
-            </div>
-
-            <button type="submit" style={{ width: '100%', padding: 16, borderRadius: 12, border: 'none', background: '#111827', color: 'white', fontSize: 16, fontWeight: 600, cursor: 'pointer', transition: 'background 0.2s' }} onMouseOver={(e) => e.currentTarget.style.background = '#374151'} onMouseOut={(e) => e.currentTarget.style.background = '#111827'}>
-              Continue to Dashboard
-            </button>
-          </form>
         </motion.div>
       </section>
+
+      {/* ── FEATURES ── */}
+      <section style={{ padding: '80px 32px', background: 'rgba(255,255,255,0.02)', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }}>
+          <motion.h2 variants={fadeUp} style={{ textAlign: 'center', fontSize: 'clamp(24px,4vw,40px)', fontWeight: 800, marginBottom: 48 }}>
+            Platform Features
+          </motion.h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, maxWidth: 1200, margin: '0 auto' }}>
+            {FEATURES.map((f, i) => (
+              <motion.div key={i} variants={fadeUp} whileHover={{ y: -4 }}
+                style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 18, border: '1px solid rgba(255,255,255,0.07)', padding: 24 }}>
+                <div style={{ fontSize: 36, marginBottom: 14 }}>{f.icon}</div>
+                <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{f.title}</h3>
+                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>{f.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ── FOOTER CTA ── */}
+      <section style={{ padding: '80px 32px', textAlign: 'center' }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+          <h2 style={{ fontSize: 'clamp(28px,4vw,48px)', fontWeight: 900, marginBottom: 16 }}>Ready to make an impact?</h2>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 16, marginBottom: 36, maxWidth: 500, margin: '0 auto 36px' }}>
+            Join the growing network of conscious recyclers and start earning carbon credits today.
+          </p>
+          <motion.button whileHover={{ scale: 1.06, boxShadow: '0 20px 50px rgba(16,185,129,0.5)' }} whileTap={{ scale: 0.97 }}
+            onClick={() => navigate('/auth/user')}
+            style={{ background: 'linear-gradient(135deg,#10B981,#3B82F6)', color: 'white', padding: '18px 48px', borderRadius: 16, border: 'none', fontSize: 18, fontWeight: 800, cursor: 'pointer' }}>
+            🌿 Join as Consumer →
+          </motion.button>
+        </motion.div>
+      </section>
+
+      {/* Footer */}
+      <div style={{ textAlign: 'center', padding: '24px', borderTop: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.25)', fontSize: 13 }}>
+        E-Waste Tokenization & Carbon Credit Circular Economy · Google Solution Challenge 2024
+      </div>
     </div>
   );
 }
