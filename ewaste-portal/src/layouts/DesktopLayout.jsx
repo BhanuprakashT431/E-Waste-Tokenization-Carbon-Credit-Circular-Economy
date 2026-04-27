@@ -19,14 +19,14 @@ export default function DesktopLayout() {
             <LayoutDashboard size={20} />
             <span style={{fontSize: 14}}>Overview</span>
           </Link>
-          <div className="nav-item" style={{flexDirection: 'row', padding: '12px 16px'}}>
+          <Link to={isESG ? "#" : "/recycler/reports"} className={`nav-item ${location.pathname.endsWith('reports') ? 'active' : ''}`} style={{flexDirection: 'row', padding: '12px 16px', borderRadius: 8, backgroundColor: location.pathname.endsWith('reports') ? '#F3F4F6' : 'transparent', textDecoration: 'none', color: 'inherit'}}>
             <FileText size={20} />
             <span style={{fontSize: 14}}>Reports</span>
-          </div>
-          <div className="nav-item" style={{flexDirection: 'row', padding: '12px 16px'}}>
+          </Link>
+          <Link to={isESG ? "#" : "/recycler/analytics"} className={`nav-item ${location.pathname.endsWith('analytics') ? 'active' : ''}`} style={{flexDirection: 'row', padding: '12px 16px', borderRadius: 8, backgroundColor: location.pathname.endsWith('analytics') ? '#F3F4F6' : 'transparent', textDecoration: 'none', color: 'inherit'}}>
             <BarChart2 size={20} />
             <span style={{fontSize: 14}}>Analytics</span>
-          </div>
+          </Link>
         </div>
 
         <div style={{marginTop: 'auto'}}>

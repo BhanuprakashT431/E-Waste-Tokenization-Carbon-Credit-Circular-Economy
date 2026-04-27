@@ -10,6 +10,8 @@ import Wallet from './pages/Wallet';
 
 import CollectorDashboard from './pages/CollectorDashboard';
 import RecyclerDashboard from './pages/RecyclerDashboard';
+import RecyclerReports from './pages/RecyclerReports';
+import RecyclerAnalytics from './pages/RecyclerAnalytics';
 import ESGDashboard from './pages/ESGDashboard';
 
 import { AppProvider } from './context/AppContext';
@@ -37,6 +39,8 @@ function App() {
           {/* Recycler Desktop Flow */}
           <Route path="/recycler" element={<DesktopLayout />}>
             <Route path="dashboard" element={<RecyclerDashboard />} />
+            <Route path="reports" element={<RecyclerReports />} />
+            <Route path="analytics" element={<RecyclerAnalytics />} />
           </Route>
 
           {/* ESG Desktop Flow */}
