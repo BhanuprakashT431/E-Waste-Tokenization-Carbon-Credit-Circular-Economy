@@ -32,7 +32,7 @@ export default function MobileLayout() {
             </Link>
           )}
           {isCollector && (
-            <Link to="/collector/dashboard" className="nav-item">
+            <Link to="/collector/earnings" className={`nav-item ${location.pathname.includes('earnings') ? 'active' : ''}`}>
               <List size={24} />
               <span>Earnings</span>
             </Link>

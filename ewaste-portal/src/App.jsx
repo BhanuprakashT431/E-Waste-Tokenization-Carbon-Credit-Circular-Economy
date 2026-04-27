@@ -9,6 +9,7 @@ import LogEwaste from './pages/LogEwaste';
 import Wallet from './pages/Wallet';
 
 import CollectorDashboard from './pages/CollectorDashboard';
+import CollectorEarnings from './pages/CollectorEarnings';
 import RecyclerDashboard from './pages/RecyclerDashboard';
 import RecyclerReports from './pages/RecyclerReports';
 import RecyclerAnalytics from './pages/RecyclerAnalytics';
@@ -34,6 +35,7 @@ function App() {
           {/* Collector Mobile Flow */}
           <Route path="/collector" element={<MobileLayout />}>
             <Route path="dashboard" element={<CollectorDashboard />} />
+            <Route path="earnings" element={<CollectorEarnings />} />
           </Route>
 
           {/* Recycler Desktop Flow */}
