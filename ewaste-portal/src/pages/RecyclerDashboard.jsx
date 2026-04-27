@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { analyzeItem } from '../utils/integrityAI';
+import { ProfileAvatar, useAuthProfile } from '../components/ProfileAvatar';
 
 const SCAN_STEPS = [
   'Identifying item category...',
@@ -28,6 +29,7 @@ function QualityBar({ score, color }) {
 
 export default function RecyclerDashboard() {
   const { recyclerProfile, requests, processRequest } = useAppContext();
+  const authProfile = useAuthProfile();
 
   const [modalState, setModalState] = useState('closed'); // closed | scanning | result
   const [scanStep, setScanStep] = useState(0);
@@ -76,12 +78,10 @@ export default function RecyclerDashboard() {
   return (
     <div style={{ maxWidth: 1000 }}>
       <motion.div className="profile-header" style={{ marginBottom: 40 }} variants={itemVariants} initial="hidden" animate="show">
-        <div className="avatar">
-          <img src="https://i.pravatar.cc/150?u=ecoprocess" alt="Profile" />
-        </div>
+        <ProfileAvatar size={52} />
         <div className="profile-text">
-          <h2 style={{ fontSize: 24 }}>Hi, {recyclerProfile.name}</h2>
-          <p style={{ fontSize: 15 }}>Let's build a sustainable future!</p>
+          <h2 style={{ fontSize: 24 }}>Hi, {authProfile.name} 👋</h2>
+          <p style={{ fontSize: 15 }}>{authProfile.companyName || 'Let\'s build a sustainable future!'}</p>
         </div>
       </motion.div>
 

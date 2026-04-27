@@ -4,9 +4,11 @@ import { useAppContext } from '../context/AppContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Lock, CheckCircle, AlertCircle, Navigation } from 'lucide-react';
 import CollectorMapView from '../components/CollectorMapView';
+import { ProfileAvatar, useAuthProfile } from '../components/ProfileAvatar';
 
 export default function CollectorDashboard() {
   const { collectorProfile, requests, acceptRequest, confirmPickup, deliverRequest } = useAppContext();
+  const authProfile = useAuthProfile();
 
   const [pickupModal, setPickupModal] = useState(null);
   const [enteredCode, setEnteredCode] = useState('');
@@ -77,11 +79,9 @@ export default function CollectorDashboard() {
     <motion.div variants={containerVariants} initial="hidden" animate="show">
       {/* Profile header */}
       <motion.div variants={itemVariants} className="profile-header">
-        <div className="avatar">
-          <img src="https://i.pravatar.cc/150?u=arjun" alt="Profile" />
-        </div>
+        <ProfileAvatar size={52} />
         <div className="profile-text">
-          <h2>Hi, {collectorProfile.name}</h2>
+          <h2>Hi, {authProfile.name} 👋</h2>
           <p>Keep collecting, keep earning!</p>
         </div>
       </motion.div>

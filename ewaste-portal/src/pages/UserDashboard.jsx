@@ -3,6 +3,7 @@ import { Leaf, MapPin, Lock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'framer-motion';
+import { ProfileAvatar, useAuthProfile } from '../components/ProfileAvatar';
 
 const statusColor = {
   PENDING: '#F59E0B',
@@ -22,6 +23,7 @@ const statusLabel = {
 
 export default function UserDashboard() {
   const { userProfile, requests } = useAppContext();
+  const authProfile = useAuthProfile();
 
   const ewasteLogged = requests.length;
   const inProgress = requests.filter(r => ['PENDING', 'IN_PROGRESS', 'PICKED_UP', 'DELIVERED'].includes(r.status)).length;
@@ -39,11 +41,9 @@ export default function UserDashboard() {
   return (
     <motion.div variants={containerVariants} initial="hidden" animate="show">
       <motion.div variants={itemVariants} className="profile-header">
-        <div className="avatar">
-          <img src="https://i.pravatar.cc/150?img=68" alt="Profile" />
-        </div>
+        <ProfileAvatar size={52} />
         <div className="profile-text">
-          <h2>Hello, {userProfile.name}</h2>
+          <h2>Hello, {authProfile.name} 👋</h2>
           <p>Let's recycle for a better future!</p>
         </div>
       </motion.div>

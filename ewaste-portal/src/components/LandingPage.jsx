@@ -10,6 +10,10 @@ const ROLES = [
     desc: 'Log your e-waste, share your location, earn Carbon Credit Tokens for every pickup.',
     gradient: 'linear-gradient(135deg, #065F46, #059669)',
     glow: 'rgba(16,185,129,0.3)',
+    accent: '#34D399',
+    textColor: '#6EE7B7',
+    tagBg: 'rgba(52,211,153,0.18)',
+    tagColor: '#34D399',
     tags: ['Log Devices', 'Earn CC Tokens', 'Track Pickups'],
   },
   {
@@ -19,6 +23,10 @@ const ROLES = [
     desc: 'Accept pickup requests, navigate via live map, verify with secure codes, earn per delivery.',
     gradient: 'linear-gradient(135deg, #4C1D95, #7C3AED)',
     glow: 'rgba(139,92,246,0.3)',
+    accent: '#A78BFA',
+    textColor: '#C4B5FD',
+    tagBg: 'rgba(167,139,250,0.18)',
+    tagColor: '#A78BFA',
     tags: ['Route Navigation', 'Pickup Codes', 'Earn per kg'],
   },
   {
@@ -28,15 +36,23 @@ const ROLES = [
     desc: 'Use Integrity AI to verify e-waste, identify reusable parts, and issue CC tokens.',
     gradient: 'linear-gradient(135deg, #1E3A5F, #2563EB)',
     glow: 'rgba(59,130,246,0.3)',
+    accent: '#60A5FA',
+    textColor: '#93C5FD',
+    tagBg: 'rgba(96,165,250,0.18)',
+    tagColor: '#60A5FA',
     tags: ['AI Verification', 'Part Analysis', 'Token Issuance'],
   },
   {
     id: 'esg',
     emoji: '🌍',
     label: 'ESG Officer',
-    desc: 'Track your organisation\'s environmental impact, CO₂ reduction, and UN SDG compliance.',
+    desc: "Track your organisation's environmental impact, CO₂ reduction, and UN SDG compliance.",
     gradient: 'linear-gradient(135deg, #042F2E, #0D9488)',
     glow: 'rgba(20,184,166,0.3)',
+    accent: '#2DD4BF',
+    textColor: '#5EEAD4',
+    tagBg: 'rgba(45,212,191,0.18)',
+    tagColor: '#2DD4BF',
     tags: ['ESG Reports', 'UN SDG Alignment', 'Carbon Market'],
   },
 ];
@@ -117,15 +133,14 @@ export default function LandingPage() {
         </motion.div>
 
         {/* Live stats */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-          style={{ display: 'flex', gap: 40, marginTop: 72, flexWrap: 'wrap', justifyContent: 'center' }}>
-          {[['12,450+','Devices Recycled'],['2.4M+','CC Tokens Issued'],['18.6 Tons','CO₂ Avoided'],['3,200+','Active Users']].map(([v, l]) => (
+        <div style={{ display: 'flex', gap: 40, marginTop: 72, flexWrap: 'wrap', justifyContent: 'center' }}>
+          {[['12,450+','Devices Recycled','#34D399'],['2.4M+','CC Tokens Issued','#60A5FA'],['18.6 Tons','CO₂ Avoided','#A78BFA'],['3,200+','Active Users','#F9A8D4']].map(([v, l, c]) => (
             <div key={l} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 28, fontWeight: 800, background: 'linear-gradient(90deg,#10B981,#3B82F6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{v}</div>
-              <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', marginTop: 4 }}>{l}</div>
+              <div style={{ fontSize: 28, fontWeight: 800, color: c }}>{v}</div>
+              <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 4 }}>{l}</div>
             </div>
           ))}
-        </motion.div>
+        </div>
       </section>
 
       {/* ── ROLE CARDS ── */}
@@ -150,15 +165,15 @@ export default function LandingPage() {
                 {/* gradient swatch */}
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 4, background: r.gradient, borderRadius: '24px 24px 0 0' }} />
                 <div style={{ fontSize: 44, marginBottom: 14 }}>{r.emoji}</div>
-                <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8 }}>{r.label}</h3>
-                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, marginBottom: 20 }}>{r.desc}</p>
+                <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 8, color: 'white' }}>{r.label}</h3>
+                <p style={{ fontSize: 14, color: r.textColor, lineHeight: 1.6, marginBottom: 20, fontWeight: 500 }}>{r.desc}</p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {r.tags.map(t => (
-                    <span key={t} style={{ fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 20, background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.65)' }}>{t}</span>
+                    <span key={t} style={{ fontSize: 11, fontWeight: 700, padding: '5px 11px', borderRadius: 20, background: r.tagBg, color: r.tagColor, border: `1px solid ${r.tagColor}40`, letterSpacing: 0.3 }}>{t}</span>
                   ))}
                 </div>
-                <div style={{ marginTop: 20, fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.5)' }}>
-                  Register / Login →
+                <div style={{ marginTop: 20, fontSize: 14, fontWeight: 800, color: r.accent, display: 'flex', alignItems: 'center', gap: 4 }}>
+                  Register / Login <span style={{ fontSize: 18 }}>→</span>
                 </div>
               </motion.div>
             ))}
@@ -174,11 +189,11 @@ export default function LandingPage() {
           </motion.h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 20, maxWidth: 1200, margin: '0 auto' }}>
             {FEATURES.map((f, i) => (
-              <motion.div key={i} variants={fadeUp} whileHover={{ y: -4 }}
+              <motion.div key={i} variants={fadeUp} whileHover={{ y: -4, borderColor: 'rgba(255,255,255,0.2)' }}
                 style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 18, border: '1px solid rgba(255,255,255,0.07)', padding: 24 }}>
                 <div style={{ fontSize: 36, marginBottom: 14 }}>{f.icon}</div>
-                <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{f.title}</h3>
-                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6 }}>{f.desc}</p>
+                <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8, color: 'white' }}>{f.title}</h3>
+                <p style={{ fontSize: 14, color: '#94A3B8', lineHeight: 1.6 }}>{f.desc}</p>
               </motion.div>
             ))}
           </div>

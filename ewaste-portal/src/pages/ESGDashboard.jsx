@@ -5,6 +5,7 @@ import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell
 } from 'recharts';
+import { ProfileAvatar, useAuthProfile } from '../components/ProfileAvatar';
 
 const PIE_COLORS = {
   Laptop: '#3B82F6', 'Mobile Phone': '#10B981', Battery: '#F59E0B',
